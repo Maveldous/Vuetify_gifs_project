@@ -31,10 +31,12 @@
 </template>
 
 <script lang="ts">
+
   import Vue from 'vue'
+  import {GifData} from '@/common/types'
 
   export default Vue.extend({
-    name: 'results',
+    name: 'Results',
 
     data: () => ({
       loader: require('@/assets/loading1.gif')  
@@ -52,7 +54,7 @@
     },
 
     methods: {
-      WebShareInit(gif: any) {
+      WebShareInit(gif: GifData) {
         if (navigator.share) {
           navigator.share({
             title: gif.title,

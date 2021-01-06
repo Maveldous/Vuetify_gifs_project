@@ -60,14 +60,15 @@
 <script lang="ts">
 
 import Vue from 'vue';
+import {GifData} from '@/common/types'
 
 export default Vue.extend({
   name: 'App',
     data: () => ({
-      data: [] as any,
+      data: [] as Array<GifData>,
       notFound: false as boolean,
       query: '' as string,
-      limit: 20 as number,
+      limit: 30 as number,
       loader: require('@/assets/loading1.gif'),
       loadTimeout: false as boolean,
     }),
@@ -77,7 +78,7 @@ export default Vue.extend({
   },
 
   created() {
-    this.GetRandomGifs(this.limit).then((data: any) => this.data = data) 
+    this.GetRandomGifs(this.limit).then((data: Array<GifData>) => this.data = data) 
   },
 
   methods: {
@@ -86,12 +87,12 @@ export default Vue.extend({
       this.query = $event
 
       if($event === '') {
-        this.GetRandomGifs(20).then( (data: any) => this.data = data)
+        this.GetRandomGifs(30).then( (data: Array<GifData>) => this.data = data)
         this.notFound = false
         return
       }
 
-      fetch(`http://api.giphy.com/v1/gifs/search?q=${$event}&api_key=aeXjbr8K3v1V83Pw0yJySLOhXMGeh33B&limit=20`)
+      fetch(`http://api.giphy.com/v1/gifs/search?q=${$event}&api_key=aeXjbr8K3v1V83Pw0yJySLOhXMGeh33B&limit=30`)
       .then(res => {
         if(!res.ok) {
           throw Error(res.statusText)
@@ -105,11 +106,11 @@ export default Vue.extend({
           this.notFound = false
         }
         else {
-          this.GetRandomGifs(1).then( (data: any) => this.data = data)
+          this.GetRandomGifs(1).then( (data: Array<GifData>) => this.data = data)
           this.notFound = true
         }
 
-        this.limit = 20
+        this.limit = 30
       })
     },
 
@@ -121,7 +122,7 @@ export default Vue.extend({
         }
         return res.json()
       }).then(data => {
-        return data.data.map( (item: any) => ({url: item.images.original.url,title: item.title}))
+        return data.data.map( <GifData extends {}>(item: any) => ({url: item.images.original.url, title: item.title}))
       })
     },
 
