@@ -101,7 +101,7 @@ export default Vue.extend({
       .then(data => {
         console.log(data)
         if(data.data.length) {
-          this.data = data.data.map( (item: any) => item.images.original.url)
+          this.data = data.data.map( (item: any) => ({url: item.images.original.url,title: item.title}))
           this.notFound = false
         }
         else {
@@ -121,7 +121,7 @@ export default Vue.extend({
         }
         return res.json()
       }).then(data => {
-        return data.data.map( (item: any) => item.images.original.url)
+        return data.data.map( (item: any) => ({url: item.images.original.url,title: item.title}))
       })
     },
 
@@ -142,7 +142,7 @@ export default Vue.extend({
           })
           .then(data => {
             data.data.forEach((item: any) => {
-              this.data.push(item.images.original.url)
+              this.data.push({url: item.images.original.url,title: item.title})
             });
           })
         }
@@ -155,7 +155,7 @@ export default Vue.extend({
           })
           .then(data => {
             data.data.forEach((item: any) => {
-              this.data.push(item.images.original.url)
+              this.data.push({url: item.images.original.url,title: item.title})
             });
           })
         }

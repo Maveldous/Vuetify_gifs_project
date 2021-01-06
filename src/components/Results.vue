@@ -9,8 +9,22 @@
         <h2 v-if="notfound" >Not Found</h2>
         <v-img
           :lazy-src="loader"
-          :src="gif"
-        />
+          :src="gif.url"
+        >
+        <v-btn
+          @click.prevent="WebShareInit(gif)"
+          x-small
+          depressed
+          dark
+          fab
+          color="rgba(0,0,0,0.5)"
+          class="float-right mr-2 mt-2"
+        >
+          <v-icon dark>
+            mdi-reply
+          </v-icon>
+        </v-btn>
+        </v-img>
       </div>
     </transition-group>
   </v-container>
@@ -36,6 +50,27 @@
         default: false
       }
     },
+
+    methods: {
+      WebShareInit(gif: any) {
+        if (navigator.share) {
+          navigator.share({
+            title: gif.title,
+            text: 'description',
+            url: gif.url,
+          })
+          .then(function () {
+              console.log("Shareing successfull")
+          })
+          .catch(function () {
+              console.log("Sharing failed")
+          })
+        }
+        else {
+          alert('share not supported in your browser')
+        }
+      }
+    }
   })
 </script>
 
