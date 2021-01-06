@@ -34,7 +34,8 @@
       >
 
         <v-text-field
-          @input="pushReq"
+          @input="pauseEnter"
+          autofocus
           append-icon="mdi-magnify"
           light
           type="text"
@@ -64,14 +65,15 @@ import {GifData} from '@/common/types'
 
 export default Vue.extend({
   name: 'App',
-    data: () => ({
-      data: [] as Array<GifData>,
-      notFound: false as boolean,
-      query: '' as string,
-      limit: 30 as number,
-      loader: require('@/assets/loading1.gif'),
-      loadTimeout: false as boolean,
-    }),
+  data: () => ({
+    data: [] as Array<GifData>,
+    notFound: false as boolean,
+    query: '' as string,
+    limit: 30 as number,
+    loader: require('@/assets/loading1.gif'),
+    loadTimeout: false as boolean,
+    blockEnter: false as boolean,
+  }),
 
   components: {
     Results: () => import('./components/Results.vue'),
@@ -83,16 +85,26 @@ export default Vue.extend({
 
   methods: {
 
-    pushReq($event: string) {
+    pauseEnter($event: string) {
+      $event = $event.trim()
       this.query = $event
 
-      if($event === '') {
+      setTimeout(() => {
+        if($event === this.query) {
+          this.pushReq(this.query)
+        }
+      }, 600)
+    },
+
+    pushReq(query: string) {
+      
+      if(query === '') {
         this.GetRandomGifs(30).then( (data: Array<GifData>) => this.data = data)
         this.notFound = false
         return
       }
 
-      fetch(`http://api.giphy.com/v1/gifs/search?q=${$event}&api_key=aeXjbr8K3v1V83Pw0yJySLOhXMGeh33B&limit=30`)
+      fetch(`http://api.giphy.com/v1/gifs/search?q=${query}&api_key=aeXjbr8K3v1V83Pw0yJySLOhXMGeh33B&limit=30`)
       .then(res => {
         if(!res.ok) {
           throw Error(res.statusText)
@@ -106,8 +118,10 @@ export default Vue.extend({
           this.notFound = false
         }
         else {
-          this.GetRandomGifs(1).then( (data: Array<GifData>) => this.data = data)
-          this.notFound = true
+          this.GetRandomGifs(1).then( (data: Array<GifData>) => {
+            this.notFound = true
+            this.data = data; 
+          })
         }
 
         this.limit = 30
