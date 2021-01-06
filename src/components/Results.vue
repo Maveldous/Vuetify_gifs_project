@@ -3,7 +3,7 @@
     <transition-group name="list" class="row justify-center">
       <div
         v-for="(gif,index) in gifs"
-        :key="`gif-${gif}-${index}`"
+        :key="`gif-${gif.title}-${index}`"
         class="col-12 col-sm-6 col-md-3 text-center mt-4"
       >
         <h2 v-if="notfound" >Not Found</h2>
@@ -58,7 +58,7 @@
         if (navigator.share) {
           navigator.share({
             title: gif.title,
-            text: 'description',
+            text: gif.title,
             url: gif.url,
           })
           .then(function () {
@@ -77,13 +77,14 @@
 </script>
 
 <style lang="scss">
+
   .list-enter-active, .list-leave-active {
     transition: all 1s;
   }
+
   .list-enter, .list-leave-to {
     opacity: 0;
+    transform: translateX(20px);
   }
-  .list-leave-active {
-    position: absolute;
-  }
+
 </style>

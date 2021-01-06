@@ -104,7 +104,7 @@ export default Vue.extend({
         return
       }
 
-      fetch(`http://api.giphy.com/v1/gifs/search?q=${query}&api_key=aeXjbr8K3v1V83Pw0yJySLOhXMGeh33B&limit=30`)
+      fetch(`https://api.giphy.com/v1/gifs/search?q=${query}&api_key=aeXjbr8K3v1V83Pw0yJySLOhXMGeh33B&limit=30`)
       .then(res => {
         if(!res.ok) {
           throw Error(res.statusText)
@@ -129,7 +129,7 @@ export default Vue.extend({
     },
 
     GetRandomGifs(limit: number): any {
-      return fetch(`http://api.giphy.com/v1/gifs/trending?api_key=aeXjbr8K3v1V83Pw0yJySLOhXMGeh33B&limit=${limit}`)
+      return fetch(`https://api.giphy.com/v1/gifs/trending?api_key=aeXjbr8K3v1V83Pw0yJySLOhXMGeh33B&limit=${limit}`)
       .then(res => {
         if(!res.ok) {
           throw Error(res.statusText)
@@ -148,7 +148,7 @@ export default Vue.extend({
         this.limit += 40
         
         if(this.query) {
-          fetch(`http://api.giphy.com/v1/gifs/search?q=${this.query}&api_key=aeXjbr8K3v1V83Pw0yJySLOhXMGeh33B&limit=40&offset=${this.limit}`)
+          fetch(`https://api.giphy.com/v1/gifs/search?q=${this.query}&api_key=aeXjbr8K3v1V83Pw0yJySLOhXMGeh33B&limit=40&offset=${this.limit}`)
           .then(res => {
             if(!res.ok) {
               throw Error(res.statusText)
@@ -162,7 +162,7 @@ export default Vue.extend({
           })
         }
         else {
-          return fetch(`http://api.giphy.com/v1/gifs/trending?api_key=aeXjbr8K3v1V83Pw0yJySLOhXMGeh33B&limit=40&offset=${this.limit}`).then(res => {
+          return fetch(`https://api.giphy.com/v1/gifs/trending?api_key=aeXjbr8K3v1V83Pw0yJySLOhXMGeh33B&limit=40&offset=${this.limit}`).then(res => {
             if(!res.ok) {
               throw Error(res.statusText)
             }
